@@ -175,6 +175,65 @@ imersao-sac-agente-design/
 
 ---
 
+## 3.5 Compatibilidade entre sistemas (Mac/Linux/Windows)
+
+**Antes de rodar qualquer comando shell, detecte o ambiente.** O Claude Code Desktop pode estar rodando em diferentes shells dependendo do sistema do aluno:
+
+```bash
+# No primeiro Bash desta sessão, descubra o shell:
+echo "shell=$0; os=$(uname -s 2>/dev/null || echo Windows)"
+```
+
+Resultado típico:
+- `Darwin` → macOS, shell bash/zsh → use comandos UNIX padrão
+- `Linux` → Linux, shell bash → use comandos UNIX padrão
+- `MINGW*` / `MSYS*` / `CYGWIN*` → Windows com **Git Bash** → use comandos UNIX padrão (funciona)
+- `Windows_NT` ou comando `uname` falha → Windows com **PowerShell/CMD puro** → traduzir comandos
+
+### Tabela de equivalências (use quando estiver em PowerShell/CMD puro)
+
+| Tarefa | Bash (Mac/Linux/Git Bash) | PowerShell |
+|---|---|---|
+| Verificar arquivo existe | `test -f .env && echo OK` | `Test-Path .env` |
+| Ver conteúdo (curto) | `cat file.txt` | `Get-Content file.txt` |
+| Buscar padrão | `grep "X" file.txt` | `Select-String "X" file.txt` |
+| Criar pasta | `mkdir -p path/to/dir` | `New-Item -ItemType Directory -Force path/to/dir` |
+| Abrir arquivo no SO | `open output/file.png` (Mac) / `xdg-open` (Linux) | `Start-Process output\file.png` |
+| Python | `python3` | `python` (geralmente) ou `py` |
+| Ativar venv | `source .venv/bin/activate` | `.venv\Scripts\Activate.ps1` |
+| Variável env | `$VAR` | `$env:VAR` |
+| Separador de path | `/` | `\` (mas `/` geralmente funciona também) |
+
+### Estratégia preferida: Python como cross-platform
+
+**Sempre que possível, prefira chamar um script Python a improvisar comandos shell**. Os scripts em `scripts/` (`gemini_text.py`, `render_slides.py`, etc.) usam `pathlib` e funcionam idênticos nos 3 sistemas. Se você precisa de uma checagem que hoje está em bash inline (ex: `test -f .env`), faça via Python:
+
+```bash
+python -c "from pathlib import Path; print('OK' if Path('.env').exists() else 'MISSING')"
+```
+
+Esse comando funciona em qualquer shell em qualquer sistema, desde que Python esteja no PATH.
+
+### Comando `python` vs `python3`
+
+- **Mac/Linux**: prefira `python3` (em alguns sistemas `python` aponta pra Python 2 antigo)
+- **Windows**: geralmente é `python` (sem o 3) ou `py`. Se `python3` não funcionar, tenta `python`.
+
+Quando rodar scripts deste projeto, o padrão é `python3 scripts/X.py`. Se falhar com "command not found" em Windows, troca por `python scripts/X.py` e segue.
+
+### Abrir arquivos pro aluno ver o resultado
+
+Quando o criativo estiver pronto, tente abrir automaticamente:
+
+```bash
+# Tenta primeiro o comando do sistema correto. Se um falhar, tenta o próximo.
+open output/file.png 2>/dev/null || xdg-open output/file.png 2>/dev/null || start output\\file.png 2>/dev/null || echo "Abre manualmente: output/file.png"
+```
+
+Se nada funcionar, mostra ao aluno o caminho completo e pede pra ele abrir no Finder/Explorador.
+
+---
+
 ## 4. Quando invocar cada skill
 
 | Situação | Skill |

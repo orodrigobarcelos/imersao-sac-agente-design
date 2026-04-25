@@ -20,6 +20,18 @@ Se você ainda **não tem** o Claude Code Desktop:
 - Baixa em https://claude.com/download
 - Instala normalmente (Mac ou Windows)
 
+### 🪟 Se você usa Windows: instala também o Git for Windows
+
+O Claude precisa de um terminal compatível pra rodar comandos. No Mac já vem de fábrica, no Windows você precisa instalar:
+
+1. Baixa em https://git-scm.com/download/win
+2. Roda o instalador clicando **"Next" em tudo** (as opções padrão estão certas)
+3. Isso instala o **Git Bash**, que é o que o Claude Code Desktop vai usar
+
+(Usuário Mac/Linux pode pular este passo.)
+
+### Abrindo o projeto
+
 Com o Claude Code Desktop aberto:
 1. **Arrasta a pasta do projeto** pra cima da janela do Claude Code
    *(ou: menu **File → Open Folder** → seleciona a pasta)*
