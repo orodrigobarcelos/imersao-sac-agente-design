@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Anúncio — {{BRAND_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=Lora:wght@400;600;700&family=Nunito+Sans:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600&family=Bricolage+Grotesque:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-primary: {{BRAND_PRIMARY}};
+    --brand-light: {{BRAND_LIGHT}};
+    --brand-dark: {{BRAND_DARK}};
+    --light-bg: {{LIGHT_BG}};
+    --light-border: {{LIGHT_BORDER}};
+    --dark-bg: {{DARK_BG}};
+    --brand-gradient: {{BRAND_GRADIENT}};
+    --heading-font: '{{HEADING_FONT}}', serif;
+    --body-font: '{{BODY_FONT}}', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #fff; font-family: var(--body-font); }
+  body { display: flex; align-items: center; justify-content: center; }
+
+  .ad {
+    width: 420px;
+    height: 420px;
+    position: relative;
+    overflow: hidden;
+    background: var(--brand-gradient);
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ad.has-image .ad-image-wrapper {
+    overflow: hidden;
+    position: relative;
+  }
+  .ad-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .ad.has-image { background: var(--dark-bg); }
+
+  .ad-content {
+    padding: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    grid-column: 1 / -1;
+  }
+  .ad.has-image .ad-content { grid-column: 2 / -1; }
+
+  .top-area { display: flex; flex-direction: column; gap: 12px; }
+  .logo-lockup { display: flex; align-items: center; gap: 8px; }
+  .logo-circle {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--brand-primary);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--heading-font); font-size: 14px; font-weight: 700;
+  }
+  .brand-name { font-family: var(--body-font); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; }
+
+  .tag {
+    font-family: var(--body-font);
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand-light);
+  }
+
+  .headline {
+    font-family: var(--heading-font);
+    font-size: 26px; font-weight: 700;
+    letter-spacing: -0.4px; line-height: 1.1;
+    color: #fff;
+  }
+  .subheadline {
+    font-family: var(--body-font);
+    font-size: 13px; line-height: 1.45;
+    opacity: 0.85; color: #fff;
+  }
+
+  .bottom-area { display: flex; flex-direction: column; gap: 10px; }
+  .cta {
+    display: inline-flex; align-self: flex-start;
+    align-items: center; gap: 6px;
+    padding: 10px 20px;
+    background: var(--light-bg);
+    color: var(--brand-dark);
+    font-family: var(--body-font);
+    font-size: 12.5px; font-weight: 600;
+    border-radius: 24px;
+  }
+  .handle {
+    font-family: var(--body-font);
+    font-size: 10px; opacity: 0.6; color: #fff;
+  }
+
+  .ad:not(.has-image) .ad-content {
+    padding: 40px 36px;
+    justify-content: center;
+    gap: 24px;
+  }
+  .ad:not(.has-image) .headline { font-size: 30px; }
+</style>
+</head>
+<body>
+  <div class="ad" id="ad">
+    <div class="ad-image-wrapper" id="imgWrapper" style="display:none;">
+      <img class="ad-image" id="adImage" src="" alt="" />
+    </div>
+    <div class="ad-content">
+      <div class="top-area">
+        <div class="logo-lockup">
+          <div class="logo-circle">{{LOGO_INITIAL}}</div>
+          <div class="brand-name">{{BRAND_NAME}}</div>
+        </div>
+        <span class="tag">ANÚNCIO</span>
+        <h1 class="headline">{{HEADLINE}}</h1>
+        <p class="subheadline" id="subheadline">{{SUBHEADLINE}}</p>
+      </div>
+      <div class="bottom-area">
+        <div class="cta">{{CTA_TEXT}} →</div>
+        <span class="handle">{{BRAND_HANDLE}}</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const imgSrc = "{{IMAGE_SRC}}";
+  const ad = document.getElementById('ad');
+  if (imgSrc && imgSrc.length > 0) {
+    document.getElementById('adImage').src = imgSrc;
+    document.getElementById('imgWrapper').style.display = 'block';
+    ad.classList.add('has-image');
+  }
+  const sub = document.getElementById('subheadline');
+  if (sub && !sub.textContent.trim()) sub.style.display = 'none';
+</script>
+</body>
+</html>

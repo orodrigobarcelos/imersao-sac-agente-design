@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Anúncio — {{BRAND_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=Lora:wght@400;600;700&family=Nunito+Sans:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600&family=Bricolage+Grotesque:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-primary: {{BRAND_PRIMARY}};
+    --brand-light: {{BRAND_LIGHT}};
+    --brand-dark: {{BRAND_DARK}};
+    --light-bg: {{LIGHT_BG}};
+    --light-border: {{LIGHT_BORDER}};
+    --dark-bg: {{DARK_BG}};
+    --brand-gradient: {{BRAND_GRADIENT}};
+    --heading-font: '{{HEADING_FONT}}', serif;
+    --body-font: '{{BODY_FONT}}', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #fff; font-family: var(--body-font); }
+  body { display: flex; align-items: center; justify-content: center; }
+
+  .ad {
+    width: 420px;
+    height: 525px;
+    position: relative;
+    overflow: hidden;
+    background: var(--brand-gradient);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Variação visual: imagem ocupa metade superior se fornecida */
+  .ad.has-image .ad-image-wrapper {
+    height: 260px;
+    overflow: hidden;
+    position: relative;
+  }
+  .ad.has-image .ad-image-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--dark-bg));
+    pointer-events: none;
+  }
+  .ad-image {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+
+  .ad.has-image { background: var(--dark-bg); }
+  .ad.has-image .ad-content { background: var(--dark-bg); flex: 1; }
+
+  .ad-content {
+    flex: 1;
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .top-area { display: flex; flex-direction: column; gap: 14px; }
+  .logo-lockup { display: flex; align-items: center; gap: 10px; }
+  .logo-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--brand-primary);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--heading-font); font-size: 16px; font-weight: 700;
+  }
+  .brand-name { font-family: var(--body-font); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+
+  .tag {
+    font-family: var(--body-font);
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand-light);
+  }
+
+  .headline {
+    font-family: var(--heading-font);
+    font-size: 34px; font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.08;
+    color: #fff;
+  }
+  .subheadline {
+    font-family: var(--body-font);
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0.85;
+    color: #fff;
+  }
+  .body-text {
+    font-family: var(--body-font);
+    font-size: 13px;
+    line-height: 1.55;
+    opacity: 0.78;
+    color: #fff;
+  }
+
+  .bottom-area {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .cta {
+    display: inline-flex; align-self: flex-start;
+    align-items: center; gap: 8px;
+    padding: 13px 24px;
+    background: var(--light-bg);
+    color: var(--brand-dark);
+    font-family: var(--body-font);
+    font-size: 14px; font-weight: 600;
+    border-radius: 28px;
+  }
+
+  .handle {
+    font-family: var(--body-font);
+    font-size: 11px; opacity: 0.6;
+    color: #fff;
+  }
+
+  /* Sem imagem: layout mais ar */
+  .ad:not(.has-image) .ad-content {
+    padding: 56px 40px 48px;
+    justify-content: center;
+    gap: 32px;
+  }
+  .ad:not(.has-image) .headline { font-size: 38px; }
+</style>
+</head>
+<body>
+  <div class="ad" id="ad">
+    <div class="ad-image-wrapper" id="imgWrapper" style="display:none;">
+      <img class="ad-image" id="adImage" src="" alt="" />
+    </div>
+    <div class="ad-content">
+      <div class="top-area">
+        <div class="logo-lockup">
+          <div class="logo-circle">{{LOGO_INITIAL}}</div>
+          <div class="brand-name">{{BRAND_NAME}}</div>
+        </div>
+        <span class="tag">ANÚNCIO</span>
+        <h1 class="headline">{{HEADLINE}}</h1>
+        <p class="subheadline" id="subheadline">{{SUBHEADLINE}}</p>
+        <p class="body-text" id="bodyText">{{BODY_TEXT}}</p>
+      </div>
+      <div class="bottom-area">
+        <div class="cta">{{CTA_TEXT}} →</div>
+        <span class="handle">{{BRAND_HANDLE}}</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Esconde campos vazios e ativa modo "tem imagem" se IMAGE_SRC presente
+  const imgSrc = "{{IMAGE_SRC}}";
+  const ad = document.getElementById('ad');
+  if (imgSrc && imgSrc.length > 0) {
+    document.getElementById('adImage').src = imgSrc;
+    document.getElementById('imgWrapper').style.display = 'block';
+    ad.classList.add('has-image');
+  }
+  ['subheadline', 'bodyText'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.textContent.trim()) el.style.display = 'none';
+  });
+</script>
+</body>
+</html>

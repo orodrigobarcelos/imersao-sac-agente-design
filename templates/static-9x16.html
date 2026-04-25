@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Story — {{BRAND_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=Lora:wght@400;600;700&family=Nunito+Sans:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600&family=Bricolage+Grotesque:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-primary: {{BRAND_PRIMARY}};
+    --brand-light: {{BRAND_LIGHT}};
+    --brand-dark: {{BRAND_DARK}};
+    --light-bg: {{LIGHT_BG}};
+    --light-border: {{LIGHT_BORDER}};
+    --dark-bg: {{DARK_BG}};
+    --brand-gradient: {{BRAND_GRADIENT}};
+    --heading-font: '{{HEADING_FONT}}', serif;
+    --body-font: '{{BODY_FONT}}', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #fff; font-family: var(--body-font); }
+  body { display: flex; align-items: center; justify-content: center; }
+
+  .ad {
+    width: 420px;
+    height: 747px;
+    position: relative;
+    overflow: hidden;
+    background: var(--brand-gradient);
+    color: #fff;
+  }
+
+  .ad-image-wrapper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    display: none;
+  }
+  .ad-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .ad.has-image .ad-image-wrapper { display: block; }
+  .ad.has-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--dark-bg) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.15) 60%, transparent 100%);
+    z-index: 1;
+  }
+
+  .ad-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 56px 36px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .top-area { display: flex; flex-direction: column; gap: 14px; }
+  .logo-lockup { display: flex; align-items: center; gap: 10px; }
+  .logo-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--brand-primary);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--heading-font); font-size: 16px; font-weight: 700;
+  }
+  .brand-name { font-family: var(--body-font); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+
+  .middle-area { display: flex; flex-direction: column; gap: 16px; }
+  .tag {
+    font-family: var(--body-font);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--brand-light);
+  }
+
+  .headline {
+    font-family: var(--heading-font);
+    font-size: 38px; font-weight: 700;
+    letter-spacing: -0.5px; line-height: 1.05;
+    color: #fff;
+  }
+  .subheadline {
+    font-family: var(--body-font);
+    font-size: 16px; line-height: 1.45;
+    opacity: 0.88; color: #fff;
+  }
+  .body-text {
+    font-family: var(--body-font);
+    font-size: 14px; line-height: 1.55;
+    opacity: 0.78; color: #fff;
+  }
+
+  .bottom-area { display: flex; flex-direction: column; gap: 18px; }
+  .cta {
+    display: inline-flex; align-self: flex-start;
+    align-items: center; gap: 8px;
+    padding: 14px 28px;
+    background: var(--light-bg);
+    color: var(--brand-dark);
+    font-family: var(--body-font);
+    font-size: 14.5px; font-weight: 600;
+    border-radius: 32px;
+  }
+  .handle {
+    font-family: var(--body-font);
+    font-size: 12px; opacity: 0.7; color: #fff;
+  }
+
+  /* Sem imagem: layout mais centrado */
+  .ad:not(.has-image) .ad-content { justify-content: center; gap: 36px; }
+</style>
+</head>
+<body>
+  <div class="ad" id="ad">
+    <div class="ad-image-wrapper">
+      <img class="ad-image" id="adImage" src="" alt="" />
+    </div>
+    <div class="ad-content">
+      <div class="top-area">
+        <div class="logo-lockup">
+          <div class="logo-circle">{{LOGO_INITIAL}}</div>
+          <div class="brand-name">{{BRAND_NAME}}</div>
+        </div>
+      </div>
+      <div class="middle-area">
+        <span class="tag">ANÚNCIO</span>
+        <h1 class="headline">{{HEADLINE}}</h1>
+        <p class="subheadline" id="subheadline">{{SUBHEADLINE}}</p>
+        <p class="body-text" id="bodyText">{{BODY_TEXT}}</p>
+      </div>
+      <div class="bottom-area">
+        <div class="cta">{{CTA_TEXT}} →</div>
+        <span class="handle">{{BRAND_HANDLE}}</span>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const imgSrc = "{{IMAGE_SRC}}";
+  const ad = document.getElementById('ad');
+  if (imgSrc && imgSrc.length > 0) {
+    document.getElementById('adImage').src = imgSrc;
+    ad.classList.add('has-image');
+  }
+  ['subheadline', 'bodyText'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.textContent.trim()) el.style.display = 'none';
+  });
+</script>
+</body>
+</html>

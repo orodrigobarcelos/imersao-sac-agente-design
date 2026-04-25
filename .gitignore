@@ -1,0 +1,49 @@
+# Segredos
+.env
+.env.local
+
+# Output dos criativos (pode pesar)
+output/*
+!output/.gitkeep
+
+# Brand kit do aluno (pessoal)
+brand/*
+!brand/.gitkeep
+
+# Assets do aluno (fotos pessoais)
+assets/*
+!assets/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+/tmp/
+
+# Lixo do scaffolding Next.js inicial (não conseguimos apagar por permissões — ignorar)
+app/
+public/
+node_modules/
+package.json
+package-lock.json
+eslint.config.mjs
+next-env.d.ts
+next.config.ts
+postcss.config.mjs
+tsconfig.json
+.next/

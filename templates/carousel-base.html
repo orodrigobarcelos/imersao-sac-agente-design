@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Carrossel — {{BRAND_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600&family=Lora:wght@400;600;700&family=Nunito+Sans:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:wght@400;600;700&family=Outfit:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600&family=Bricolage+Grotesque:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-primary: {{BRAND_PRIMARY}};
+    --brand-light: {{BRAND_LIGHT}};
+    --brand-dark: {{BRAND_DARK}};
+    --light-bg: {{LIGHT_BG}};
+    --light-border: {{LIGHT_BORDER}};
+    --dark-bg: {{DARK_BG}};
+    --brand-gradient: {{BRAND_GRADIENT}};
+    --heading-font: '{{HEADING_FONT}}', serif;
+    --body-font: '{{BODY_FONT}}', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #fff; font-family: var(--body-font); }
+  body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+
+  .ig-frame {
+    width: 420px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  }
+
+  .carousel-viewport {
+    width: 420px;
+    height: 525px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.4s ease;
+    will-change: transform;
+  }
+
+  .slide {
+    flex: 0 0 420px;
+    width: 420px;
+    height: 525px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide.bg-light { background: var(--light-bg); color: #1a1918; }
+  .slide.bg-dark { background: var(--dark-bg); color: #fff; }
+  .slide.bg-gradient { background: var(--brand-gradient); color: #fff; }
+
+  .slide-content {
+    flex: 1;
+    padding: 36px 36px 52px 36px;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.justify-center .slide-content { justify-content: center; }
+  .slide.justify-end .slide-content { justify-content: flex-end; }
+
+  .tag {
+    font-family: var(--body-font);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .slide.bg-light .tag { color: var(--brand-primary); }
+  .slide.bg-dark .tag { color: var(--brand-light); }
+  .slide.bg-gradient .tag { color: rgba(255,255,255,0.7); }
+
+  .heading {
+    font-family: var(--heading-font);
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    line-height: 1.12;
+    margin-bottom: 12px;
+  }
+  .subheading {
+    font-family: var(--body-font);
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.78;
+    margin-bottom: 16px;
+  }
+  .body-text {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    line-height: 1.55;
+    opacity: 0.85;
+  }
+
+  /* Logo lockup */
+  .logo-lockup { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .logo-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--brand-primary);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--heading-font); font-size: 16px; font-weight: 700;
+  }
+  .brand-name {
+    font-family: var(--body-font);
+    font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  }
+
+  /* Hero image */
+  .hero-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+
+  /* Items list (problem) */
+  .items-list { list-style: none; margin-top: 8px; }
+  .items-list li {
+    font-family: var(--body-font);
+    font-size: 13.5px;
+    line-height: 1.5;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    opacity: 0.92;
+    display: flex; gap: 10px;
+  }
+  .items-list li::before { content: "—"; color: var(--brand-light); flex-shrink: 0; }
+  .slide.bg-light .items-list li { border-bottom-color: var(--light-border); }
+  .slide.bg-light .items-list li::before { color: var(--brand-primary); }
+
+  /* Strikethrough pills — pra "deixar pra trás X, Y, Z" */
+  .legacy-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+  .legacy-pills .pill {
+    font-family: var(--body-font);
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.7);
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgba(255,255,255,0.45);
+  }
+  .slide.bg-light .legacy-pills .pill {
+    border-color: var(--light-border);
+    background: rgba(0,0,0,0.02);
+    color: rgba(0,0,0,0.5);
+    text-decoration-color: rgba(0,0,0,0.35);
+  }
+
+  /* Watermark — logo sutil de fundo nos slides hero/cta/gradient */
+  .watermark {
+    position: absolute;
+    right: -30px;
+    bottom: -30px;
+    width: 220px;
+    height: 220px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+  }
+  .watermark img { width: 100%; height: 100%; object-fit: contain; }
+  .slide.bg-gradient .watermark { opacity: 0.10; }
+  .slide.bg-light .watermark { opacity: 0.05; }
+  /* Garante que o conteúdo fica acima do watermark */
+  .slide-content { position: relative; z-index: 1; }
+
+  /* Features */
+  .features-list { display: flex; flex-direction: column; gap: 4px; }
+  .feature-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--light-border);
+  }
+  .feature-icon {
+    color: var(--brand-primary);
+    font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; line-height: 1.4;
+  }
+  .feature-meta { display: flex; flex-direction: column; gap: 2px; }
+  .feature-label { font-family: var(--body-font); font-size: 13.5px; font-weight: 600; }
+  .feature-desc { font-family: var(--body-font); font-size: 12px; opacity: 0.65; }
+  .slide.bg-dark .feature-row { border-bottom-color: rgba(255,255,255,0.08); }
+  .slide.bg-dark .feature-icon { color: var(--brand-light); }
+
+  /* Steps */
+  .steps-list { display: flex; flex-direction: column; gap: 6px; }
+  .step-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--light-border);
+  }
+  .step-num {
+    font-family: var(--heading-font);
+    font-size: 24px; font-weight: 300;
+    color: var(--brand-primary);
+    min-width: 32px; line-height: 1;
+  }
+  .step-meta { display: flex; flex-direction: column; gap: 2px; }
+  .step-title { font-family: var(--body-font); font-size: 13.5px; font-weight: 600; }
+  .step-desc { font-family: var(--body-font); font-size: 12px; opacity: 0.65; }
+  .slide.bg-dark .step-row { border-bottom-color: rgba(255,255,255,0.08); }
+  .slide.bg-dark .step-num { color: var(--brand-light); }
+
+  /* Quote */
+  .quote-box {
+    margin-top: 14px;
+    padding: 14px;
+    background: rgba(0,0,0,0.18);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .quote-text {
+    font-family: var(--heading-font);
+    font-size: 14px; font-style: italic; line-height: 1.4;
+    color: rgba(255,255,255,0.92);
+  }
+
+  /* CTA button */
+  .cta-button {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px;
+    background: var(--light-bg);
+    color: var(--brand-dark);
+    font-family: var(--body-font);
+    font-size: 13.5px; font-weight: 600;
+    border-radius: 28px;
+    margin-top: 16px;
+    text-decoration: none;
+  }
+
+  /* Progress bar (every slide) */
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 28px 20px;
+    z-index: 10;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--brand-primary);
+    border-radius: 2px;
+  }
+  .progress-counter {
+    font-family: var(--body-font);
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(0,0,0,0.3);
+  }
+  .slide.bg-dark .progress-track,
+  .slide.bg-gradient .progress-track {
+    background: rgba(255,255,255,0.12);
+  }
+  .slide.bg-dark .progress-fill,
+  .slide.bg-gradient .progress-fill {
+    background: #fff;
+  }
+  .slide.bg-dark .progress-counter,
+  .slide.bg-gradient .progress-counter {
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Swipe arrow (all slides except last) */
+  .swipe-arrow {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 40px;
+    z-index: 9;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+  }
+  .swipe-arrow.light-style { background: linear-gradient(to right, transparent, rgba(0,0,0,0.06)); }
+  .swipe-arrow.dark-style { background: linear-gradient(to right, transparent, rgba(255,255,255,0.08)); }
+  .swipe-arrow svg { opacity: 0.6; }
+</style>
+</head>
+<body>
+  <div class="ig-frame">
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carouselTrack"></div>
+    </div>
+  </div>
+
+<script>
+  // Dados injetados pelo render_slides.py
+  const SLIDES_DATA = {{SLIDES_DATA_JSON}};
+  const TOTAL = {{TOTAL_SLIDES}};
+  const BRAND_NAME = "{{BRAND_NAME}}";
+  const BRAND_INITIAL = "{{LOGO_INITIAL}}";
+  // Logo da marca em base64 (vazio se aluno não forneceu logo) — usado como watermark
+  const BRAND_LOGO_DATA_URI = "{{LOGO_DATA_URI}}";
+  // Slides que recebem watermark de fundo
+  const WATERMARK_TYPES = new Set(['hero', 'cta', 'solution']);
+
+  function bgClassFor(type, index) {
+    // Alternância pra ritmo visual
+    const palette = {
+      hero: 'bg-light',
+      problem: 'bg-dark',
+      solution: 'bg-gradient',
+      features: 'bg-light',
+      details: 'bg-dark',
+      how_to: 'bg-light',
+      cta: 'bg-gradient',
+    };
+    return palette[type] || (index % 2 === 0 ? 'bg-light' : 'bg-dark');
+  }
+
+  function arrowSvg(isDark) {
+    const stroke = isDark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.3)';
+    return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M9 6l6 6-6 6" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  }
+
+  function logoLockup() {
+    return `<div class="logo-lockup">
+      <div class="logo-circle">${BRAND_INITIAL}</div>
+      <div class="brand-name">${BRAND_NAME}</div>
+    </div>`;
+  }
+
+  function renderSlideBody(slide) {
+    const t = slide.type;
+    const tag = slide.tag ? `<span class="tag">${slide.tag}</span>` : '';
+    const heading = slide.headline ? `<h2 class="heading">${slide.headline}</h2>` : '';
+    const sub = slide.subheadline ? `<p class="subheading">${slide.subheadline}</p>` : '';
+    const body = slide.body ? `<p class="body-text">${slide.body}</p>` : '';
+    const image = slide.image_data ? `<img class="hero-image" src="${slide.image_data}" alt="" />` : '';
+
+    if (t === 'hero') {
+      return `${logoLockup()}${tag}${heading}${sub}${image}`;
+    }
+    if (t === 'problem') {
+      // Pills riscadas: pra "deixar pra trás X, Y, Z" (ferramentas/abordagens antigas)
+      const pills = (slide.legacy_items || []).map(p => `<span class="pill">${p}</span>`).join('');
+      const pillsHtml = pills ? `<div class="legacy-pills">${pills}</div>` : '';
+      const items = (slide.items || []).map(i => `<li>${i}</li>`).join('');
+      const itemsHtml = items ? `<ul class="items-list">${items}</ul>` : '';
+      return `${tag}${heading}${sub}${pillsHtml}${itemsHtml}`;
+    }
+    if (t === 'solution') {
+      const quote = slide.quote ? `<div class="quote-box"><p class="quote-text">${slide.quote}</p></div>` : '';
+      return `${tag}${heading}${body}${quote}`;
+    }
+    if (t === 'features') {
+      const features = (slide.features || []).map(f => `
+        <div class="feature-row">
+          <div class="feature-icon">${f.icon || '•'}</div>
+          <div class="feature-meta">
+            <div class="feature-label">${f.label}</div>
+            <div class="feature-desc">${f.desc || ''}</div>
+          </div>
+        </div>`).join('');
+      return `${tag}${heading}${sub}<div class="features-list">${features}</div>`;
+    }
+    if (t === 'details') {
+      const items = (slide.items || []).map(i => `<li>${i}</li>`).join('');
+      return `${tag}${heading}${body}${items ? `<ul class="items-list">${items}</ul>` : ''}${image}`;
+    }
+    if (t === 'how_to') {
+      const steps = (slide.steps || []).map((s, i) => `
+        <div class="step-row">
+          <div class="step-num">${String(i + 1).padStart(2, '0')}</div>
+          <div class="step-meta">
+            <div class="step-title">${s.title}</div>
+            <div class="step-desc">${s.desc || ''}</div>
+          </div>
+        </div>`).join('');
+      return `${tag}${heading}${sub}<div class="steps-list">${steps}</div>`;
+    }
+    if (t === 'cta') {
+      const cta = slide.cta_text ? `<div class="cta-button">${slide.cta_text} →</div>` : '';
+      return `${logoLockup()}${tag}${heading}${sub}${cta}`;
+    }
+    // fallback
+    return `${tag}${heading}${sub}${body}${image}`;
+  }
+
+  function renderSlide(slide, index, total) {
+    const bgClass = bgClassFor(slide.type, index);
+    const isDark = bgClass !== 'bg-light';
+    const justify = (slide.type === 'hero' || slide.type === 'cta' || slide.type === 'solution') ? 'justify-center' : 'justify-end';
+
+    const isLast = index === total - 1;
+    const arrowHtml = isLast ? '' : `
+      <div class="swipe-arrow ${isDark ? 'dark-style' : 'light-style'}">${arrowSvg(isDark)}</div>`;
+
+    // Watermark sutil só nos slides de alta atenção (hero, cta, solution)
+    // e somente se o aluno forneceu logo (BRAND_LOGO_DATA_URI preenchida)
+    const watermarkHtml = (BRAND_LOGO_DATA_URI && WATERMARK_TYPES.has(slide.type))
+      ? `<div class="watermark"><img src="${BRAND_LOGO_DATA_URI}" alt="" /></div>`
+      : '';
+
+    const pct = ((index + 1) / total) * 100;
+
+    return `
+      <div class="slide ${bgClass} ${justify}">
+        ${watermarkHtml}
+        <div class="slide-content">
+          ${renderSlideBody(slide)}
+        </div>
+        ${arrowHtml}
+        <div class="progress-bar">
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${pct}%;"></div>
+          </div>
+          <span class="progress-counter">${index + 1}/${total}</span>
+        </div>
+      </div>`;
+  }
+
+  const track = document.getElementById('carouselTrack');
+  track.innerHTML = SLIDES_DATA.map((s, i) => renderSlide(s, i, TOTAL)).join('');
+</script>
+</body>
+</html>
