@@ -72,28 +72,45 @@ Se der `Executable doesn't exist`:
 playwright install chromium
 ```
 
-### Passo 5 — Verifica .env e GEMINI_API_KEY
+### Passo 5 — Verifica `.env` e GEMINI_API_KEY
 
 ```bash
 test -f .env && echo "ENV_EXISTS" || echo "ENV_MISSING"
 ```
 
-Se `ENV_MISSING`:
+Se `ENV_MISSING` ou (existe mas chave vazia — `grep -E "^GEMINI_API_KEY=.+" .env` falha):
 
-> ❌ Você ainda não configurou sua chave Gemini.
->
-> 1. Pegue uma chave grátis em https://aistudio.google.com/app/apikey
-> 2. Faça uma cópia do arquivo `.env.example` e renomeie pra `.env`
-> 3. Cole sua chave depois do `=`
-> 4. Volta aqui e me avisa
+**Não peça pro aluno editar arquivo manualmente.** Crie o `.env` por ele:
 
-Se existe, valida que tem chave:
+1. Pergunta no chat:
+   > "Pra eu poder gerar textos e imagens com IA, preciso de uma chave gratuita do Google Gemini.
+   >
+   > 1. Abre este link em outra aba: https://aistudio.google.com/app/apikey
+   > 2. Faz login com sua conta Google
+   > 3. Clica em **'Create API key'** (botão azul no canto superior direito)
+   > 4. Copia a chave que aparece (começa com `AIza...`)
+   > 5. Cola aqui na conversa
+   >
+   > Pode mandar a chave aqui que eu salvo do jeito certo no arquivo `.env`."
 
-```bash
-grep -E "^GEMINI_API_KEY=.+" .env > /dev/null && echo "KEY_OK" || echo "KEY_EMPTY"
-```
+2. Quando o aluno colar a chave, valida o formato:
+   - Deve começar com `AIza`
+   - Deve ter ~39 caracteres
+   - Sem espaços nas pontas (faz `.strip()`)
+   - Se não bater: "Hmm, isso não parece uma chave Gemini válida. Confere se você copiou tudo? Deve começar com `AIza`."
 
-Se `KEY_EMPTY`: orienta o aluno a editar `.env` e adicionar a chave.
+3. Use a tool **Write** pra criar `.env` na raiz do projeto com este conteúdo (substitua `{CHAVE}` pelo valor colado pelo aluno):
+   ```
+   GEMINI_API_KEY={CHAVE}
+   GEMINI_TEXT_MODEL=gemini-2.5-flash
+   GEMINI_IMAGE_MODEL=gemini-2.5-flash-image
+   ```
+
+4. Confirma com mensagem curta: "✅ Chave salva. Vou testar agora se está funcionando..."
+
+5. Pula direto pro Passo 6 (teste real).
+
+**Importante**: depois de salvar, **nunca mais leia o conteúdo do `.env` nem mencione a chave em mensagens**. Se precisar validar de novo, use o script de teste do Passo 6.
 
 ### Passo 6 — Testa a chave Gemini com chamada real
 

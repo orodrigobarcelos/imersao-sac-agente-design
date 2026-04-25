@@ -6,6 +6,12 @@ Crie criativos de anúncio profissionais (estáticos ou carrossel) **conversando
 
 ---
 
+## 🚀 Primeira vez aqui? **[Lê o COMECE-AQUI.md →](COMECE-AQUI.md)**
+
+3 passos simples, sem terminal, sem código. O Claude conduz o resto.
+
+---
+
 ## 🎯 O que dá pra fazer
 
 - **Criativo único (estático)** — 1 imagem nos formatos 1:1, 4:5 ou 9:16
